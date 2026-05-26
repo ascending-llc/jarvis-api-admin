@@ -1,5 +1,5 @@
 {
-  "name": "jarvis-chat-admin-panel",
+  "name": "librechat-admin-panel",
   "private": true,
   "type": "module",
   "imports": {
