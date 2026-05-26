@@ -1,0 +1,14 @@
+{
+  "jarvis": {
+    "eks_cluster_name": "ascending-s-api-cluster",
+    "aws_deploy_role": "SAAS_AWS_DEPLOY_ROLE_ARN"
+  },
+  "jarvis-demo": {
+    "eks_cluster_name": "ascending-s-api-cluster",
+    "aws_deploy_role": "SAAS_AWS_DEPLOY_ROLE_ARN"
+  },
+  "askcto": {
+    "eks_cluster_name": "ascending-askcto-cluster",
+    "aws_deploy_role": "AWS_DEPLOY_ROLE_ARN"
+  }
+}

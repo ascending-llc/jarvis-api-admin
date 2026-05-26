@@ -1,13 +1,13 @@
-# LibreChat Admin Panel
+# Jarvis Chat Admin Panel
 
-A browser-based management interface for [LibreChat](https://github.com/danny-avila/LibreChat). It connects to the same database as the main application and provides a GUI for tasks that would otherwise require editing `librechat.yaml` directly.
+A browser-based management interface for [Jarvis Chat](https://github.com/ascending-llc/jarvis-api). It connects to the same database as the main application and provides a GUI for tasks that would otherwise require editing `librechat.yaml` directly.
 
 ## Features
 
-- **Configuration management** — View and edit all LibreChat settings through a dynamic, schema-driven form. New fields added to the schema appear automatically.
+- **Configuration management** — View and edit all Jarvis Chat settings through a dynamic, schema-driven form. New fields added to the schema appear automatically.
 - **Role and group overrides** — Apply configuration overrides scoped to specific roles or groups, with a priority-based cascade that determines the final resolved value for each user.
 - **User and group administration** — Create and manage groups, assign roles, and control access.
-- **Authentication** — Supports username/password login and OpenID SSO when enabled on the LibreChat instance.
+- **Authentication** — Supports username/password login and OpenID SSO when enabled on the Jarvis Chat instance.
 - **Localization** — Full multi-language support for all UI strings.
 - **Accessibility** — Keyboard navigable with ARIA regions, focus management, and screen reader support.
 
@@ -34,7 +34,7 @@ docker compose down     # stop
 
 > **Note:** Inside Docker, `localhost` refers to the container, not your machine.
 > Use `http://host.docker.internal:3080` for `VITE_API_BASE_URL` to reach
-> LibreChat running on the host.
+> Jarvis Chat running on the host.
 
 #### Environment variables
 
@@ -42,28 +42,28 @@ docker compose down     # stop
 | ------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `PORT`                          | No                                  | `3000`                                                                           | Port the admin panel listens on                                                                 |
 | `SESSION_SECRET`                | **Yes** (always required in Docker) | Dev fallback only when running `bun dev` locally; no default in the Docker image | Encryption key for sessions (min 32 chars)                                                      |
-| `VITE_API_BASE_URL`             | **Yes** (Docker)                    | `http://localhost:3080` (local dev only)                                         | LibreChat API server URL; use `http://host.docker.internal:<port>` in Docker                    |
+| `VITE_API_BASE_URL`             | **Yes** (Docker)                    | `http://localhost:3080` (local dev only)                                         | Jarvis Chat API server URL; use `http://host.docker.internal:<port>` in Docker                    |
 | `API_SERVER_URL`                | No                                  | Falls back to `VITE_API_BASE_URL`                                                | Server-side LibreChat API URL when the container reaches LibreChat differently than the browser |
 | `ADMIN_SSO_ONLY`                | No                                  | `false`                                                                          | Hide email/password form, SSO only                                                              |
 | `ADMIN_SESSION_IDLE_TIMEOUT_MS` | No                                  | `1800000` (30 min)                                                               | Session idle timeout in ms                                                                      |
 | `SESSION_COOKIE_SECURE`         | No                                  | `true` in production, `false` otherwise                                          | Set `false` only for plain-HTTP deployments so the browser keeps the admin session cookie       |
 
 For OpenID SSO, the admin panel stores a short-lived PKCE verifier in the
-`admin-session` cookie before redirecting to LibreChat. If the admin panel is
+`admin-session` cookie before redirecting to Jarvis Chat. If the admin panel is
 served over plain HTTP while running in production mode, browsers reject a
 `Secure` session cookie and the callback cannot complete the PKCE exchange. In
 that deployment shape, set `SESSION_COOKIE_SECURE=false` on the admin panel.
-Set the same override on LibreChat itself when LibreChat is also reached over
+Set the same override on Jarvis Chat itself when Jarvis Chat is also reached over
 plain HTTP, so its OAuth and auth cookies are not dropped either.
 
 #### Standalone Docker build
 
 ```bash
-docker build -t librechat-admin-panel .
+docker build -t jarvis-chat-admin-panel .
 docker run -p 3000:3000 \
   --add-host=host.docker.internal:host-gateway \
   -e SESSION_SECRET=your-secret-here-at-least-32-characters \
   -e VITE_API_BASE_URL=http://host.docker.internal:3080 \
   -e SESSION_COOKIE_SECURE=false \
-  librechat-admin-panel
+  jarvis-chat-admin-panel
 ```
