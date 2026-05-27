@@ -36,7 +36,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'LibreChat Admin Panel',
+        title: 'Jarvis Chat Admin Panel',
       },
     ],
     links: [
@@ -46,7 +46,8 @@ export const Route = createRootRoute({
       },
       {
         rel: 'icon',
-        href: '/favicon.ico',
+        type: 'image/png',
+        href: '/favicon-32x32.png',
       },
     ],
   }),
