@@ -39,7 +39,7 @@ USER bun
 ENV PORT=3000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD bun -e "fetch(\`http://localhost:\${process.env.PORT}\`).then(r=>{if(!r.ok)throw 1}).catch(()=>process.exit(1))"
+  CMD bun -e "fetch(\`http://localhost:\${process.env.PORT}/health\`).then(r=>{if(!r.ok)throw 1}).catch(()=>process.exit(1))"
 
 EXPOSE 3000
 CMD ["bun", "run", "start"]

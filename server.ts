@@ -1,5 +1,6 @@
 import { Glob } from 'bun';
 import { join } from 'node:path';
+import { healthResponse } from './src/server/health';
 import {
   metricsResponse,
   httpRequestsTotal,
@@ -79,6 +80,7 @@ const server = Bun.serve({
   routes: {
     ...(await buildStaticRoutes()),
     '/metrics': (req) => metricsResponse(req),
+    '/health': () => healthResponse(),
     '/*': async (req) => {
       const url = new URL(req.url);
       const res = await withHttpMetrics(req, url.pathname, () => handler.fetch(req));
