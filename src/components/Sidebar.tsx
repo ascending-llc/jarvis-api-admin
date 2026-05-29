@@ -31,7 +31,7 @@ const navItems: t.NavItem[] = [
     capability: [SystemCapabilities.READ_ROLES, SystemCapabilities.READ_GROUPS],
   },
   { labelKey: 'com_nav_grants', path: '/grants', icon: 'lock' },
-  { labelKey: 'com_nav_help', path: '/help', icon: 'question' },
+  // { labelKey: 'com_nav_help', path: '/help', icon: 'question' },
 ];
 
 function getUserInitials(user?: { name?: string; email?: string } | null): string {
