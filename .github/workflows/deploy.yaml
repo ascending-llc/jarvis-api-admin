@@ -14,14 +14,11 @@ on:
           - jarvis-demo
       region:
         description: 'AWS Region to deploy to'
-        type: string
+        type: choice
         required: true
         default: us-east-1
-      image_tag:
-        description: 'Image tag to deploy (defaults to latest)'
-        type: string
-        required: false
-        default: latest
+        options:
+          - us-east-1
 
 permissions:
   id-token: write
@@ -30,9 +27,68 @@ permissions:
 run-name: Deploy Admin Panel for ${{ inputs.application }}
 
 jobs:
+  test:
+    name: Lint, Type Check & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: ESLint
+        run: bunx eslint src/ --max-warnings 0
+
+      - name: TypeScript
+        run: bunx tsc --noEmit
+
+      - name: Vitest
+        run: bun run test
+        env:
+          NODE_ENV: development
+          SESSION_SECRET: ci-test-secret-do-not-use-in-production
+
+  build-and-push:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Assume IAM role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.SAAS_AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: deployment-role-session
+          aws-region: ${{ inputs.region }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registries: "897729109735"
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/jarvis/admin-panel:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/jarvis/admin-panel:latest
+          provenance: false
+
   deploy:
     name: Deploy to EKS
     runs-on: ubuntu-latest
+    needs: build-and-push
     env:
       DEPLOYMENT_NAME: jarvis-admin-panel
     steps:
@@ -71,9 +127,11 @@ jobs:
         run: aws eks update-kubeconfig --name ${{ steps.config.outputs.eks_cluster_name }} --region ${{ inputs.region }}
 
       - name: Update image on EKS
+        env:
+          admin_panel_image: ${{ steps.login-ecr.outputs.registry }}/jarvis/admin-panel:${{ github.sha }}
         run: |
           kubectl set image deploy/${{ env.DEPLOYMENT_NAME }} \
-            jarvis-admin-panel=${{ steps.login-ecr.outputs.registry }}/jarvis/admin-panel:${{ inputs.image_tag }} \
+            jarvis-admin-panel=$admin_panel_image \
             -n ${{ inputs.application }}
 
       - name: Restart pods
