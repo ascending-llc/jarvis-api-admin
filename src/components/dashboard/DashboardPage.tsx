@@ -26,12 +26,12 @@ const QUICK_LINKS: (t.NavItem & { descKey: string })[] = [
     icon: 'lock',
     descKey: 'com_dash_grants_desc',
   },
-  {
-    labelKey: 'com_nav_help',
-    path: '/help',
-    icon: 'question',
-    descKey: 'com_dash_help_desc',
-  },
+  // {
+  //   labelKey: 'com_nav_help',
+  //   path: '/help',
+  //   icon: 'question',
+  //   descKey: 'com_dash_help_desc',
+  // },
 ];
 
 export function DashboardPage() {
