@@ -87,11 +87,11 @@ export function CommandMenu({ open, onOpenChange }: t.CommandMenuProps) {
             label={localize('com_nav_grants')}
             onSelect={() => navigateTo('/grants')}
           />
-          <CommandItem
+          {/* <CommandItem
             icon="question"
             label={localize('com_nav_help')}
             onSelect={() => navigateTo('/help')}
-          />
+          /> */}
         </Command.Group>
 
         <Command.Group heading={localize('com_cmdk_group_tabs')} className="cmdk-group">
