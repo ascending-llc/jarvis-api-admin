@@ -78,6 +78,8 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          build-args: |
+            VITE_BASE_PATH=/admin-panel
           platforms: linux/amd64
           push: true
           tags: |
