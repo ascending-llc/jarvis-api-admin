@@ -93,6 +93,11 @@ export const SECTION_META: Record<
     descriptionKey: 'com_config_section_summarization_desc',
     tab: 'features',
   },
+  messageFilter: {
+    titleKey: 'com_config_section_messageFilter',
+    descriptionKey: 'com_config_section_messageFilter_desc',
+    tab: 'features',
+  },
 
   fileConfig: {
     titleKey: 'com_config_section_file_config',
@@ -107,6 +112,11 @@ export const SECTION_META: Record<
   fileStrategies: {
     titleKey: 'com_config_section_fileStrategies',
     descriptionKey: 'com_config_section_fileStrategies_desc',
+    tab: 'files',
+  },
+  cloudfront: {
+    titleKey: 'com_config_section_cloudfront',
+    descriptionKey: 'com_config_section_cloudfront_desc',
     tab: 'files',
   },
   imageOutputType: {
@@ -167,6 +177,11 @@ export const SECTION_META: Record<
   transactions: {
     titleKey: 'com_config_section_transactions',
     descriptionKey: 'com_config_section_transactions_desc',
+    tab: 'system',
+  },
+  skillSync: {
+    titleKey: 'com_config_section_skillSync',
+    descriptionKey: 'com_config_section_skillSync_desc',
     tab: 'system',
   },
 };
